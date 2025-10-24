@@ -1,0 +1,324 @@
+import React, { useState } from "react";
+import {
+  Mail,
+  Phone,
+  Clock,
+  MapPin,
+  ArrowUpRight,
+  Loader2,
+  CheckCircle2,
+  XCircle,
+  MessageCircle,
+} from "lucide-react";
+
+const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  const contactInfo = [
+    {
+      icon: MapPin,
+      title: "Our Office",
+      details: [
+        "Jl. Cipedes Tengah No.35, Sukagalih, Sukajadi, Bandung, West Java 40163, Indonesia",
+      ],
+      ariaLabel: "Office Location",
+    },
+    {
+      icon: Phone,
+      title: "Contact Us",
+      details: [
+        "Phone: +62 851-5692-8164",
+        "Email: hello@mytech-indonesia.web.id",
+      ],
+      ariaLabel: "Contact Information",
+    },
+    {
+      icon: Clock,
+      title: "Operating Hours",
+      details: ["Monday - Friday: 09.00 - 18.00", "Weekend: By appointment only"],
+      ariaLabel: "Operating Hours",
+    },
+  ];
+
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      setSubmitStatus("success");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error) {
+      setSubmitStatus("error");
+    }
+    setIsSubmitting(false);
+  };
+
+  const StatusMessage = ({ status }) => {
+    if (!status) return null;
+
+    const configs = {
+      success: {
+        icon: CheckCircle2,
+        text: "Thank you for your message! We’ll get back to you shortly.",
+        className:
+          "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300",
+      },
+      error: {
+        icon: XCircle,
+        text: "An error occurred while sending your message. Please try again.",
+        className:
+          "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300",
+      },
+    };
+
+    const config = configs[status];
+    const Icon = config.icon;
+
+    return (
+      <div
+        className={`flex items-center p-4 mb-6 border rounded-lg ${config.className}`}
+      >
+        <Icon className="w-5 h-5 mr-2 flex-shrink-0" />
+        <p className="text-sm">{config.text}</p>
+      </div>
+    );
+  };
+
+  const handleWhatsApp = () => {
+    const message = encodeURIComponent(
+      "Hello MyTech Indonesia team! I’d like to inquire about your services."
+    );
+    window.open(`https://wa.me/6285156928164?text=${message}`, "_blank");
+  };
+
+  return (
+    <section
+      className="relative py-20 sm:py-24 bg-white dark:bg-slate-900 transition-colors duration-300"
+      aria-label="Contact Section"
+    >
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-slate-50/50 dark:bg-slate-800/50" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+          {/* Contact Form */}
+          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-6 sm:p-8 border border-slate-100 dark:border-slate-700">
+            <h2
+              className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2"
+              id="contact-form-title"
+            >
+              Contact Us
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-4">
+              Let’s discuss how we can help grow your business through smart
+              digital solutions.
+            </p>
+
+            <StatusMessage status={submitStatus} />
+
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4"
+              aria-labelledby="contact-form-title"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { id: "firstName", label: "First Name", placeholder: "John" },
+                  { id: "lastName", label: "Last Name", placeholder: "Doe" },
+                ].map((f) => (
+                  <div key={f.id}>
+                    <label
+                      htmlFor={f.id}
+                      className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                    >
+                      {f.label} <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      id={f.id}
+                      name={f.id}
+                      type="text"
+                      required
+                      value={formData[f.id]}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all duration-200"
+                      placeholder={f.placeholder}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {[
+                {
+                  id: "email",
+                  label: "Email",
+                  type: "email",
+                  placeholder: "john@example.com",
+                },
+                {
+                  id: "phone",
+                  label: "Phone Number",
+                  type: "tel",
+                  placeholder: "(123) 456-7890",
+                },
+              ].map((f) => (
+                <div key={f.id}>
+                  <label
+                    htmlFor={f.id}
+                    className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                  >
+                    {f.label} <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    id={f.id}
+                    name={f.id}
+                    type={f.type}
+                    required
+                    value={formData[f.id]}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all duration-200"
+                    placeholder={f.placeholder}
+                  />
+                </div>
+              ))}
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                >
+                  Message <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all duration-200 resize-y min-h-[100px]"
+                  placeholder="How can we assist you?"
+                />
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="flex-1 bg-gradient-to-r from-blue-700 to-sky-600 text-white font-medium px-6 py-3 rounded-xl shadow-lg shadow-blue-700/20 hover:shadow-xl hover:shadow-blue-700/30 transition-all duration-200 transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin mr-2 h-5 w-5" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      Send Message
+                      <ArrowUpRight className="ml-2 w-4 h-4" />
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleWhatsApp}
+                  className="flex-1 bg-green-500 hover:bg-green-600 text-white font-medium px-6 py-3 rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-600/40 transition-all duration-200 flex items-center justify-center"
+                >
+                  <MessageCircle className="mr-2 w-5 h-5" />
+                  Chat via WhatsApp
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Contact Info + MAPS */}
+          <div className="lg:pl-8 space-y-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+                Let’s Build Something
+                <span className="block mt-2 bg-gradient-to-r from-blue-700 to-sky-600 bg-clip-text text-transparent">
+                  Amazing Together
+                </span>
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-300 mt-4">
+                Whether you have questions about our services, need a custom
+                solution, or just want to say hi — we’d love to hear from you.
+              </p>
+            </div>
+
+            <div className="grid gap-6">
+              {contactInfo.map((item) => (
+                <div
+                  key={item.title}
+                  className="group relative bg-slate-50 dark:bg-slate-800 rounded-2xl p-6 transition-all duration-200 hover:shadow-md hover:-translate-y-1 border border-transparent dark:border-slate-700"
+                  aria-label={item.ariaLabel}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-700/5 to-sky-600/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+
+                  <div className="relative flex items-start space-x-4">
+                    <div className="flex-shrink-0">
+                      <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-700 to-sky-600 text-white shadow-md">
+                        <item.icon size={20} />
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                        {item.title}
+                      </h3>
+                      <div className="space-y-1">
+                        {item.details.map((detail, idx) => (
+                          <p key={idx} className="text-slate-600 dark:text-slate-300">
+                            {detail}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-10 rounded-2xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
+              <iframe
+                title="MyTech Indonesia Office Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.830215269141!2d107.59314147475802!3d-6.867441367188985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6ed56b7a251%3A0x2f4f9c93bb84c40!2sJl.%20Cipedes%20Tengah%20No.35%2C%20Sukagalih%2C%20Kec.%20Sukajadi%2C%20Kota%20Bandung%2C%20Jawa%20Barat%2040163!5e0!3m2!1sid!2sid!4v1739568888888!5m2!1sid!2sid"
+                width="100%"
+                height="320"
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="border-0 w-full h-[320px]"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Contact;
