@@ -4,7 +4,7 @@ const blogPosts = [
   {
     id: "Why Choose MyTech Indonesia?",
     title: "Why Choose MyTech Indonesia?",
-    date: "October 24, 2025",
+    date: "October 25, 2025",
     excerpt:
       "MyTech Indonesia stands as a trusted technology partner that helps businesses and institutions achieve efficient, modern, and sustainable digital transformation.",
     content: [
@@ -21,7 +21,7 @@ const blogPosts = [
   {
     id: "Digital Transformation: Smart Strategies to Boost Efficiency and Competitiveness",
     title: "Digital Transformation: Smart Strategies to Boost Efficiency and Competitiveness",
-    date: "October 24, 2025",
+    date: "October 25, 2025",
     excerpt:
       "Digital transformation opens vast opportunities for businesses to adapt to change, improve operational efficiency, and strengthen competitiveness in the modern era.",
     content: [
@@ -36,7 +36,7 @@ const blogPosts = [
   {
     id: "Cloud Computing: The Foundation of Flexibility and Security for Modern Businesses",
     title: "Cloud Computing: The Foundation of Flexibility and Security for Modern Businesses",
-    date: "October 24, 2025",
+    date: "October 25, 2025",
     excerpt:
       "Cloud computing enables businesses to scale faster with infrastructure that is efficient, secure, and easily adaptable to evolving needs.",
     content: [
