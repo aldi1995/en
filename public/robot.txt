@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://www.mytech-indonesia.web.id/sitemap.xml
